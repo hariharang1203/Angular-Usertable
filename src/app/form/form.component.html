@@ -1,0 +1,201 @@
+<div class="container">
+    <h1 style="font-weight: 800;">User Information</h1>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <label for="firstname">Firstname</label>
+        <input type="text" formControlName="firstname">
+        <div *ngIf="userForm.get('firstname')?.invalid && userForm.get('firstname')?.touched" class="error">
+            Firstname is required and must be alphabetic.
+        </div>
+
+        <label for="lastname">Lastname</label>
+        <input type="text" formControlName="lastname">
+        <div *ngIf="userForm.get('lastname')?.invalid && userForm.get('lastname')?.touched" class="error">
+            Lastname is required and must be alphabetic.
+        </div>
+
+        <label for="age">Age</label>
+        <input type="number" formControlName="age">
+        <div *ngIf="userForm.get('age')?.invalid && userForm.get('age')?.touched" class="error">
+            Age is required and must be greater than 0.
+        </div>
+
+        <label for="gender">Gender</label>
+        <div class="gender-group">
+            <div>
+                <input type="radio" formControlName="gender" value="male">
+                <label for="male">Male</label>
+            </div>
+            <div>
+                <input type="radio" formControlName="gender" value="female">
+                <label for="female">Female</label>
+            </div>
+        </div>
+        <div *ngIf="userForm.get('gender')?.invalid && userForm.get('gender')?.touched" class="error">
+            Gender is required.
+        </div>
+
+        <label for="course">Course</label>
+        <select formControlName="course">
+            <option value="">Select Course</option>
+            <option value="Bsc">Bsc</option>
+            <option value="BBa">BBa</option>
+            <option value="Bcom">Bcom</option>
+        </select>
+        <div *ngIf="userForm.get('course')?.invalid && userForm.get('course')?.touched" class="error">
+            Course selection is required.
+        </div>
+
+        <label for="email">Email</label>
+        <input type="email" formControlName="email">
+        <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="error">
+            A valid email is required.
+        </div>
+
+        <label for="number">Contact Number</label>
+        <input type="number" formControlName="number">
+        <div *ngIf="userForm.get('number')?.invalid && userForm.get('number')?.touched" class="error">
+            Contact number is required and must be a 10-digit number.
+        </div>
+
+        <label for="address">Address</label>
+        <textarea formControlName="address"></textarea>
+        <div *ngIf="userForm.get('address')?.invalid && userForm.get('address')?.touched" class="error">
+            Address is required and must be at least 5 characters long.
+        </div>
+        <div class="button-groups">
+            <button type="submit" [disabled]="userForm.invalid">Save</button>
+            <button type="button" (click)="clearUser()">Clear</button>
+        </div>
+    </form>
+
+    <button (click)="addList()" style="margin-top: 30px;">Add User</button>
+
+    <h2>Users List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Select</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Course</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of displayedUsers; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td> <input type="checkbox" (click)="onCheckboxChange($event,user)"></td>
+                <!-- Editable field: Firstname -->
+                <td *ngIf="editingIndex !== i; else editFirstname">
+                    {{ user.firstname }}
+                </td>
+                <ng-template #editFirstname>
+                    <td>
+                        <div class="flex-row">
+                            <input [(ngModel)]="user.firstname" />
+                        </div>
+                    </td>
+                </ng-template>
+
+                <!-- Editable field: Lastname -->
+                <td *ngIf="editingIndex !== i; else editLastname">
+                    {{ user.lastname }}
+                </td>
+                <ng-template #editLastname>
+                    <td>
+                        <div class="flex-row">
+                            <input [(ngModel)]="user.lastname" />
+                        </div>
+                    </td>
+                </ng-template>
+
+                <!-- Editable field: Course -->
+                <td *ngIf="editingIndex !== i; else editCourse">
+                    {{ user.course }}
+                </td>
+                <ng-template #editCourse>
+                    <td>
+                        <div class="flex-row">
+                            <input [(ngModel)]="user.course" />
+                        </div>
+                    </td>
+                </ng-template>
+
+                <!-- Editable field: Address -->
+                <td *ngIf="editingIndex !== i; else editAddress">
+                    {{ user.address }}
+                </td>
+                <ng-template #editAddress>
+                    <td>
+                        <div class="flex-row">
+                            <input [(ngModel)]="user.address" />
+                        </div>
+                    </td>
+                </ng-template>
+
+                <!-- Editable field: Email -->
+                <td *ngIf="editingIndex !== i; else editEmail">
+                    {{ user.email }}
+                </td>
+                <ng-template #editEmail>
+                    <td>
+                        <div class="flex-row">
+                            <input [(ngModel)]="user.email" />
+                        </div>
+                    </td>
+                </ng-template>
+
+                <!-- Editable field: Contact -->
+                <td *ngIf="editingIndex !== i; else editContact">
+                    {{ user.number }}
+                </td>
+                <ng-template #editContact>
+                    <td>
+                        <div class="flex-row">
+                            <input [(ngModel)]="user.number" />
+                        </div>
+                    </td>
+                </ng-template>
+
+                <td>
+                    <button (click)="editUser(i)" *ngIf="editingIndex!==i">Edit</button>
+                    <button *ngIf="editingIndex === i" (click)="saveUser(i, user)">Save</button>
+                    <button (click)="deleteUser(i)" *ngIf="editingIndex===i" style="margin-top: 5px;">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+<div *ngIf="checkedUsers.length === 0" style="text-align: center;">
+    <p>No Users to Display.</p>
+</div>
+<div *ngIf="checkedUsers.length > 0">
+    <h1>Selected Users Details</h1>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Course</th>
+                <th>Email</th>
+                <th>Contact Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let selectedUser of checkedUsers; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ selectedUser.firstname }}</td>
+                <td>{{ selectedUser.lastname }}</td>
+                <td>{{ selectedUser.course }}</td>
+                <td>{{ selectedUser.email }}</td>
+                <td>{{ selectedUser.number }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
