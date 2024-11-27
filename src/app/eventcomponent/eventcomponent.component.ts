@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-eventcomponent',
@@ -7,13 +7,9 @@ import { Component, OnInit,Input } from '@angular/core';
 })
 
 export class EventcomponentComponent implements OnInit {
-@Input()  eventData:any[]=[];
+
   constructor() { }
-  deleteTask(index:any):void{
-    this.eventData.splice(index,1);
-
-  }
-
+  
   ngOnInit(): void {
   }
 
