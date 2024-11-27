@@ -68,7 +68,7 @@
         </div>
     </form>
 
-    <button (click)="addList()" style="margin-top: 30px;">Add User</button>
+    <button (click)="addList()" style="margin-top: 30px;">AddUser</button>
 
     <h2>Users List</h2>
     <table>
@@ -170,8 +170,8 @@
         </tbody>
 
     </table>
-</div>
-<div *ngIf="checkedUsers.length === 0" style="text-align: center;">
+
+<div *ngIf="checkedUsers.length === 0" style="text-align: center; margin-top:30px;">
     <p>No Users to Display.</p>
 </div>
 <div *ngIf="checkedUsers.length > 0">
@@ -198,4 +198,5 @@
             </tr>
         </tbody>
     </table>
+</div>
 </div>
