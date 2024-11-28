@@ -74,6 +74,7 @@ export class FormComponent implements OnInit {
   // Method to delete a user from the displayed list
   deleteUser(index: number) {
     this.displayedUsers.splice(index, 1);
+    this.checkedUsers.splice(index, 1);
   }
 
   // Method to toggle the edit mode for a user
